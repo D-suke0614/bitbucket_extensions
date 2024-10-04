@@ -5,7 +5,8 @@
   "description": "A basic Plasmo extension.",
   "author": "Plasmo Corp. <foss@plasmo.com>",
   "scripts": {
-    "dev": "plasmo dev",
+    "dev": "plasmo dev & pnpm run dev:scss",
+    "dev:scss": "typed-scss-modules src --nameFormat kebab --exportType default --watch",
     "build": "plasmo build",
     "package": "plasmo package"
   },
@@ -21,6 +22,7 @@
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
     "prettier": "3.2.4",
+    "typed-scss-modules": "^8.0.1",
     "typescript": "5.3.3"
   },
   "manifest": {
