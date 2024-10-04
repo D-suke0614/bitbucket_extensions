@@ -1,6 +1,8 @@
 export type Styles = {
-  form: string
   main: string
+  toggle: string
+  "toggle-button": string
+  "toggle-label": string
 }
 
 export type ClassNames = keyof Styles
