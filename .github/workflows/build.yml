@@ -13,10 +13,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-
-      - name: Setup Pnpm
-        run: npm install pnpm
+          cache: pnpm
 
       - name: Cache Node Modules
         uses: actions/cache@v4
