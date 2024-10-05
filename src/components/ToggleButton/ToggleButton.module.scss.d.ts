@@ -1,7 +1,8 @@
 export type Styles = {
-  main: string
   toggle: string
-  "toggle-button": string
+  "toggle-button-area": string
+  "toggle-button-input": string
+  "toggle-button-label": string
   "toggle-label": string
 }
 
