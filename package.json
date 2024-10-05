@@ -5,8 +5,8 @@
   "description": "A basic Plasmo extension.",
   "author": "Plasmo Corp. <foss@plasmo.com>",
   "scripts": {
-    "dev": "plasmo dev & pnpm run dev:scss",
-    "dev:scss": "typed-scss-modules src --nameFormat kebab --exportType default --watch",
+    "dev": "plasmo dev & pnpm run scss",
+    "scss": "typed-scss-modules src --nameFormat kebab --exportType default --watch",
     "build": "plasmo build",
     "package": "plasmo package"
   },
