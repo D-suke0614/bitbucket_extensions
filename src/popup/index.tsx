@@ -6,6 +6,7 @@ function IndexPopup() {
   const [hideResolved, setHideResolved] = useState<boolean>(true)
 
   // TODO: 前回の値を保存しておいて、画面を開いたタイミングで1回content_scripts側に渡せるようにする（値がなければ固定値を渡す）
+  // use plasmo storage
   useEffect(() => {}, [])
 
   const handleHideResolved = async (isHide: boolean) => {
