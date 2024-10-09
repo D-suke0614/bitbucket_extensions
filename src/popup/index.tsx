@@ -1,11 +1,12 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import ToggleButton from "~src/components/ToggleButton/ToggleButton"
 
 function IndexPopup() {
-  const [hideResolved, setHideResolved] = useState<boolean>(false)
+  const [hideResolved, setHideResolved] = useState<boolean>(true)
 
   // TODO: 前回の値を保存しておいて、画面を開いたタイミングで1回content_scripts側に渡せるようにする（値がなければ固定値を渡す）
+  useEffect(() => {}, [])
 
   const handleHideResolved = async (isHide: boolean) => {
     const [tab] = await chrome.tabs.query({
