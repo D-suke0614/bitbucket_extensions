@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react"
 
-import { useStorage } from '@plasmohq/storage/hook'
+import { useStorage } from "@plasmohq/storage/hook"
 
-import ToggleButton from '~src/components/ToggleButton/ToggleButton'
+import ToggleButton from "~src/components/ToggleButton/ToggleButton"
 
 function IndexPopup() {
   //TODO: ../utils/storage.tsとまとめたい
   const [isHideResolved, setIsHideResolved] = useStorage(
-    'isHideResolved',
+    "isHideResolved",
     false
   )
 
@@ -18,7 +18,7 @@ function IndexPopup() {
     })
     if (!tab.id) return
     chrome.tabs
-      .sendMessage(tab.id, { action: 'CLICK_BUTTON' })
+      .sendMessage(tab.id, { action: "CLICK_BUTTON" })
       .then(() => {})
       .catch((e) => console.error(e))
     setIsHideResolved(isHide)
@@ -29,6 +29,7 @@ function IndexPopup() {
       <ToggleButton
         isChecked={isHideResolved}
         handleValue={handleHideResolved}
+        text={"hide resolved"}
       />
     </div>
   )
