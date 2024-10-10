@@ -1,8 +1,8 @@
 import type { PlasmoCSConfig } from "plasmo"
 
+import { observe } from "~src/utils/observe"
 import { sleep } from "~src/utils/sleep"
 import { getBooleanFromStorage } from "~src/utils/storage"
-import { observe } from "~src/utils/observe"
 
 export const config: PlasmoCSConfig = {
   matches: [
@@ -24,7 +24,7 @@ const createButton = (isHideResolved: boolean, isLeftContent: boolean) => {
     type: "button"
   }
   const buttonStyles = `
-    margin-left: ${isLeftContent ? '5px' : 'auto'};
+    margin-left: ${isLeftContent ? "5px" : "auto"};
     border: none;
     background-color: #fff;
     color: #5E6C84;
@@ -74,9 +74,10 @@ const init = async () => {
     const resolvedBudge = commentHeader.querySelector(
       "div[role='presentation']"
     )
-    
+
     if (resolvedBudge) {
-      const isOutdatedLozenge = !!commentedElements[i].querySelector('.outdated-lozenge')
+      const isOutdatedLozenge =
+        !!commentedElements[i].querySelector(".outdated-lozenge")
       // 表示切替用ボタン
       const button = createButton(isHideResolved, isOutdatedLozenge)
 
