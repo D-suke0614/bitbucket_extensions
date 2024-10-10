@@ -1,7 +1,8 @@
 import type { PlasmoCSConfig } from "plasmo"
 
 import { sleep } from "~src/utils/sleep"
-import { getBooleanFromStorage, setStorage } from "~src/utils/storage"
+import { getBooleanFromStorage } from "~src/utils/storage"
+import { observe } from "~src/utils/observe"
 
 export const config: PlasmoCSConfig = {
   matches: [
@@ -12,19 +13,18 @@ export const config: PlasmoCSConfig = {
 chrome.runtime.onMessage.addListener(async (req, sender, sendResponse) => {
   if (req.action === "CLICK_BUTTON") {
     const isHideResolved = await getBooleanFromStorage("isHideResolved")
-    console.log(isHideResolved)
     init()
   }
 })
 
-const createButton = (isHideResolved: boolean) => {
+const createButton = (isHideResolved: boolean, isLeftContent: boolean) => {
   const button = document.createElement("button")
   const buttonProperties = {
     textContent: isHideResolved ? "▼ show resolved" : "▼ hide resolved",
     type: "button"
   }
   const buttonStyles = `
-    margin-left: 5px;
+    margin-left: ${isLeftContent ? '5px' : 'auto'};
     border: none;
     background-color: #fff;
     color: #5E6C84;
@@ -45,30 +45,15 @@ const createButton = (isHideResolved: boolean) => {
   return button
 }
 
-const observe = () => {
-  const target = document.querySelector<HTMLElement>(".activities")
-
-  // オブザーバーの作成
-  const observer = new MutationObserver((records) => {
-    init()
-  })
-
-  // 監視の開始
-  observer.observe(target, {
-    childList: true
-  })
-}
-
 const init = async () => {
-  console.log("wait in 500ms")
+  console.log("wait 500ms")
   await sleep(500)
-  console.log("target element list", document.querySelectorAll(".file-comment"))
-  observe()
-  const isHideResolved = await getBooleanFromStorage("isHideResolved")
+  console.log("waited 500ms")
 
+  const isHideResolved = await getBooleanFromStorage("isHideResolved")
   const commentedElements = document.querySelectorAll(".file-comment")
   for (let i = 0; i < commentedElements.length; i++) {
-    // トグルがfalseだったらreturn, もしボタンが追加されていたら削除する
+    // トグルがfalseだったらcontinue, もしボタンが追加されていたら削除する
     if (!isHideResolved) {
       const displayedControlButton = commentedElements[i].querySelector(
         ".displayed-control-button"
@@ -80,7 +65,7 @@ const init = async () => {
       continue
     }
 
-    // すでに表示切替用ボタンを追加済だったらreturn
+    // すでに表示切替用ボタンを追加済だったらcontinue
     if (commentedElements[i].querySelector(".displayed-control-button"))
       continue
 
@@ -89,10 +74,11 @@ const init = async () => {
     const resolvedBudge = commentHeader.querySelector(
       "div[role='presentation']"
     )
-
+    
     if (resolvedBudge) {
+      const isOutdatedLozenge = !!commentedElements[i].querySelector('.outdated-lozenge')
       // 表示切替用ボタン
-      const button = createButton(isHideResolved)
+      const button = createButton(isHideResolved, isOutdatedLozenge)
 
       // 省略する要素の取得、初期表示、イベント設定
       const fileContent =
@@ -115,5 +101,4 @@ const init = async () => {
   }
 }
 
-// 仮置き
-init()
+observe(".activities", init)
