@@ -1,5 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo";
 import { sleep } from "~src/utils/sleep";
+import { setStorage, getBooleanFromStorage } from "~src/utils/storage";
 
 export const config: PlasmoCSConfig = {
   matches: ['https://stash.sprocket3.systems/projects/*/pull-requests/*/overview']
@@ -40,11 +41,11 @@ const createButton = (isHideResolved: boolean) => {
   return button
 }
 
-const init = async (isHideResolved: boolean) => {
-  console.log(isHideResolved)
+const init = async () => {
   console.log('wait in 500ms')
   await sleep(500)
   console.log('target element list', document.querySelectorAll('.file-comment'))
+  const isHideResolved = await getBooleanFromStorage('isHideResolved')
 
   const commentedElements = document.querySelectorAll('.file-comment')
   for (let i = 0; i < commentedElements.length; i++) {
@@ -76,4 +77,4 @@ const init = async (isHideResolved: boolean) => {
 }
 
 // 仮置き
-init(true)
+init()
