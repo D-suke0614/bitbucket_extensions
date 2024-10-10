@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react"
+import React from 'react'
 
-import ToggleButton from "~src/components/ToggleButton/ToggleButton"
+import { useStorage } from '@plasmohq/storage/hook'
+
+import ToggleButton from '~src/components/ToggleButton/ToggleButton'
 
 function IndexPopup() {
-  const [hideResolved, setHideResolved] = useState<boolean>(true)
-
-  // TODO: 前回の値を保存しておいて、画面を開いたタイミングで1回content_scripts側に渡せるようにする（値がなければ固定値を渡す）
-  useEffect(() => {}, [])
+  //TODO: ../utils/storage.tsとまとめたい
+  const [isHideResolved, setIsHideResolved] = useStorage(
+    'isHideResolved',
+    false
+  )
 
   const handleHideResolved = async (isHide: boolean) => {
     const [tab] = await chrome.tabs.query({
@@ -15,15 +18,18 @@ function IndexPopup() {
     })
     if (!tab.id) return
     chrome.tabs
-      .sendMessage(tab.id, { action: "CLICK_BUTTON", isHide })
+      .sendMessage(tab.id, { action: 'CLICK_BUTTON' })
       .then(() => {})
       .catch((e) => console.error(e))
-    setHideResolved(isHide)
+    setIsHideResolved(isHide)
   }
 
   return (
     <div>
-      <ToggleButton isChecked={hideResolved} handleValue={handleHideResolved} />
+      <ToggleButton
+        isChecked={isHideResolved}
+        handleValue={handleHideResolved}
+      />
     </div>
   )
 }

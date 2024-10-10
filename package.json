@@ -8,9 +8,11 @@
     "dev": "plasmo dev & pnpm run scss",
     "scss": "typed-scss-modules src --nameFormat kebab --exportType default --watch",
     "build": "plasmo build",
-    "package": "plasmo package"
+    "package": "plasmo package",
+    "format": "prettier --write 'src/**/*.{ts,tsx,scss}'"
   },
   "dependencies": {
+    "@plasmohq/storage": "^1.12.0",
     "plasmo": "0.89.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"

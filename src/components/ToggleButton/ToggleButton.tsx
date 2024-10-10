@@ -1,6 +1,6 @@
-import React from "react"
+import React from 'react'
 
-import styles from "./ToggleButton.module.scss"
+import styles from './ToggleButton.module.scss'
 
 type Props = {
   isChecked: boolean
@@ -14,15 +14,15 @@ const ToggleButton = ({ isChecked, handleValue }: Props) => {
 
   return (
     <div className={styles.toggle}>
-      <span className={styles["toggle__label"]}>resolvedを省略</span>
-      <div className={styles["toggle__button-area"]}>
+      <span className={styles['toggle__label']}>resolvedを省略</span>
+      <div className={styles['toggle__button-area']}>
         <input
-          className={styles["toggle__button-input"]}
+          className={styles['toggle__button-input']}
           type="checkbox"
           onChange={handleChange}
           checked={isChecked}
         />
-        <label className={styles["toggle__button-label"]}></label>
+        <label className={styles['toggle__button-label']}></label>
       </div>
     </div>
   )
