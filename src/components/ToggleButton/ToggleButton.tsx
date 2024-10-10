@@ -14,7 +14,7 @@ const ToggleButton = ({ isChecked, handleValue }: Props) => {
 
   return (
     <div className={styles.toggle}>
-      <span className={styles["toggle__label"]}>resolvedを省略</span>
+      <span className={styles["toggle__label"]}>hide resolved</span>
       <div className={styles["toggle__button-area"]}>
         <input
           className={styles["toggle__button-input"]}
