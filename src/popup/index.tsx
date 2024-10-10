@@ -29,6 +29,7 @@ function IndexPopup() {
       <ToggleButton
         isChecked={isHideResolved}
         handleValue={handleHideResolved}
+        text={"hide resolved"}
       />
     </div>
   )
