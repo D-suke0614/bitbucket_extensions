@@ -48,15 +48,15 @@ const createButton = (isHideResolved: boolean) => {
 const observe = () => {
   const target = document.querySelector<HTMLElement>('.activities')
 
-// オブザーバーの作成
-const observer = new MutationObserver(records => {
-  init()
-})
+  // オブザーバーの作成
+  const observer = new MutationObserver((records) => {
+    init()
+  })
 
-// 監視の開始
-observer.observe(target, {
-  childList: true
-})
+  // 監視の開始
+  observer.observe(target, {
+    childList: true
+  })
 }
 
 const init = async () => {
@@ -70,14 +70,19 @@ const init = async () => {
   for (let i = 0; i < commentedElements.length; i++) {
     // トグルがfalseだったらreturn, もしボタンが追加されていたら削除する
     if (!isHideResolved) {
-      const displayedControlButton = commentedElements[i].querySelector('.displayed-control-button')
+      const displayedControlButton = commentedElements[i].querySelector(
+        '.displayed-control-button'
+      )
       if (displayedControlButton) displayedControlButton.remove()
-        commentedElements[i].querySelector<HTMLElement>('.file-content').style.display = 'block'
-        continue
+      commentedElements[i].querySelector<HTMLElement>(
+        '.file-content'
+      ).style.display = 'block'
+      continue
     }
 
     // すでに表示切替用ボタンを追加済だったらreturn
-    if (commentedElements[i].querySelector('.displayed-control-button')) continue
+    if (commentedElements[i].querySelector('.displayed-control-button'))
+      continue
 
     // resolvedかの判定に使う要素
     const commentHeader = commentedElements[i].querySelector('.comment-header')
