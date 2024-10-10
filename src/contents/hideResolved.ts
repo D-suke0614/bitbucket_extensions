@@ -9,10 +9,11 @@ export const config: PlasmoCSConfig = {
   ]
 }
 
-chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (req, sender, sendResponse) => {
   if (req.action === 'CLICK_BUTTON') {
-    const isHideResolved = req.isHide
-    // main(isHideResolved)
+    const isHideResolved = await getBooleanFromStorage('isHideResolved')
+    console.log(isHideResolved)
+    init()
   }
 })
 
@@ -44,23 +45,45 @@ const createButton = (isHideResolved: boolean) => {
   return button
 }
 
+const observe = () => {
+  const target = document.querySelector<HTMLElement>('.activities')
+
+// オブザーバーの作成
+const observer = new MutationObserver(records => {
+  init()
+})
+
+// 監視の開始
+observer.observe(target, {
+  childList: true
+})
+}
+
 const init = async () => {
   console.log('wait in 500ms')
   await sleep(500)
   console.log('target element list', document.querySelectorAll('.file-comment'))
+  observe()
   const isHideResolved = await getBooleanFromStorage('isHideResolved')
 
   const commentedElements = document.querySelectorAll('.file-comment')
   for (let i = 0; i < commentedElements.length; i++) {
+    // トグルがfalseだったらreturn, もしボタンが追加されていたら削除する
+    if (!isHideResolved) {
+      const displayedControlButton = commentedElements[i].querySelector('.displayed-control-button')
+      if (displayedControlButton) displayedControlButton.remove()
+        commentedElements[i].querySelector<HTMLElement>('.file-content').style.display = 'block'
+        continue
+    }
+
     // すでに表示切替用ボタンを追加済だったらreturn
-    if (commentedElements[i].querySelector('.displayed-control-button')) return
+    if (commentedElements[i].querySelector('.displayed-control-button')) continue
 
     // resolvedかの判定に使う要素
     const commentHeader = commentedElements[i].querySelector('.comment-header')
     const resolvedBudge = commentHeader.querySelector(
       "div[role='presentation']"
     )
-    console.log('resolvedBudge', resolvedBudge)
 
     if (resolvedBudge) {
       // 表示切替用ボタン
