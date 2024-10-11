@@ -10,9 +10,8 @@ export const config: PlasmoCSConfig = {
   ]
 }
 
-chrome.runtime.onMessage.addListener(async (req, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   if (req.action === "CLICK_BUTTON") {
-    const isHideResolved = await getBooleanFromStorage("isHideResolved")
     init()
   }
 })
