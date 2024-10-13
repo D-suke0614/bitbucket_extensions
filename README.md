@@ -1,3 +1,15 @@
+## Overview
+
+個人的にbitbucketで使いにくいと感じた機能を改善するための拡張機能
+
+Extensions to improve features that I personally find difficult to use in bitbucket.
+
+### features
+
+- 解決済みのコメントを省略表示させる
+
+- Hide displaying resolved comments
+
 ## Getting Started
 
 First, run the development server:
