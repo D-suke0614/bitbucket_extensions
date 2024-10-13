@@ -29,7 +29,7 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://stash.sprocket3.systems/projects/*"
     ]
   }
 }
