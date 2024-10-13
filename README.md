@@ -16,3 +16,9 @@ Run the following:
 ```bash
 $ pnpm build
 ```
+
+If you want to zip the file, run the following:
+
+```bash
+$ pnpm package
+```
