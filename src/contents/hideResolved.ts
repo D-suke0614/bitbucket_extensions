@@ -11,7 +11,7 @@ export const config: PlasmoCSConfig = {
 }
 
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-  if (req.action === "CLICK_BUTTON") {
+  if (req.action === "HIDE_RESOLVED") {
     init()
   }
 })
