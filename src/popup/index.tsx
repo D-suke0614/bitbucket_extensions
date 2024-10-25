@@ -18,7 +18,7 @@ function IndexPopup() {
     })
     if (!tab.id) return
     chrome.tabs
-      .sendMessage(tab.id, { action: "CLICK_BUTTON" })
+      .sendMessage(tab.id, { action: "HIDE_RESOLVED" })
       .then(() => {})
       .catch((e) => console.error(e))
     setIsHideResolved(isHide)
