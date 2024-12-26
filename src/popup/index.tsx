@@ -11,6 +11,11 @@ function IndexPopup() {
     false
   )
 
+  const [isHighlightWords, setIsHighlightWords] = useStorage(
+    "isHighlightWords",
+    false
+  )
+
   const handleHideResolved = async (isHide: boolean) => {
     const [tab] = await chrome.tabs.query({
       active: true,
@@ -24,12 +29,30 @@ function IndexPopup() {
     setIsHideResolved(isHide)
   }
 
+  const handleHighlightWords = async (isHighlight: boolean) => {
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      lastFocusedWindow: true
+    })
+    if (!tab.id) return
+    chrome.tabs
+      .sendMessage(tab.id, { action: "HIGHLIGHT_WORDS" })
+      .then(() => {})
+      .catch((e) => console.error(e))
+    setIsHighlightWords(isHighlight)
+  }
+
   return (
     <div>
       <ToggleButton
         isChecked={isHideResolved}
         handleValue={handleHideResolved}
         text={"hide resolved"}
+      />
+      <ToggleButton
+        isChecked={isHighlightWords}
+        handleValue={handleHighlightWords}
+        text={"highlight words"}
       />
     </div>
   )
