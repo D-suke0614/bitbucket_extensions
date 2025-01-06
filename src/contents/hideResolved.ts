@@ -10,12 +10,6 @@ export const config: PlasmoCSConfig = {
   ]
 }
 
-chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-  if (req.action === "HIDE_RESOLVED") {
-    init()
-  }
-})
-
 const createButton = (isHideResolved: boolean, isLeftContent: boolean) => {
   const button = document.createElement("button")
   const buttonProperties = {
@@ -44,10 +38,8 @@ const createButton = (isHideResolved: boolean, isLeftContent: boolean) => {
   return button
 }
 
-const init = async () => {
-  console.log("wait 500ms")
+export const hideResolved = async () => {
   await sleep(500)
-  console.log("waited 500ms")
 
   const isHideResolved = await getBooleanFromStorage("isHideResolved")
   const commentedElements = document.querySelectorAll(".file-comment")
@@ -101,4 +93,4 @@ const init = async () => {
   }
 }
 
-observe(".activities", init)
+observe(".activities", hideResolved)
