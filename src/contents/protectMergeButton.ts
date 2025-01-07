@@ -16,14 +16,17 @@ export const protectMergeButton = async () => {
   const mergeButton = document.querySelector(
     ".merge-button"
   ) as HTMLButtonElement
+
   if (!isProtectMergeButton) {
     mergeButton.disabled = false
     return
   }
-  const reviews = document.querySelector(".pull-request-reviewers")
-  const isApproved = reviews
-    ? !!reviews.querySelector("span[aria-label='承認済み']")
+
+  const reviewers = document.querySelector(".pull-request-reviewers")
+  const isApproved = reviewers
+    ? !!reviewers.querySelector("span[aria-label='承認済み']")
     : false
+
   mergeButton.disabled = !isApproved
 }
 

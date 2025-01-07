@@ -5,7 +5,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import ToggleButton from "~src/components/ToggleButton/ToggleButton"
 
 function IndexPopup() {
-  //TODO: ../utils/storage.tsとまとめたい
+  //TODO: state管理をどうにかしたい
   const [isHideResolved, setIsHideResolved] = useStorage(
     "isHideResolved",
     false
@@ -16,6 +16,7 @@ function IndexPopup() {
     false
   )
 
+  // TODO: 処理の共通化
   const handleHideResolved = async (isHide: boolean) => {
     const [tab] = await chrome.tabs.query({
       active: true,
