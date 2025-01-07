@@ -1,6 +1,6 @@
+import { hideDescription } from "./hideDescription"
 import { hideResolved } from "./hideResolved"
 import { protectMergeButton } from "./protectMergeButton"
-import { hideDescription } from "./hideDescription"
 
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   switch (req.action) {
@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
     case "PROTECT_MERGE_BUTTON":
       protectMergeButton()
       break
-      case "HIDE_DESCRIPTION":
+    case "HIDE_DESCRIPTION":
       hideDescription()
       break
   }

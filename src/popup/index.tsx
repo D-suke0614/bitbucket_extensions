@@ -6,10 +6,7 @@ import ToggleButton from "~src/components/ToggleButton/ToggleButton"
 
 function IndexPopup() {
   //TODO: state管理をどうにかしたい
-  const [isHideResolved, setIsHideResolved] = useStorage(
-    "isHideResolved",
-    false
-  )
+  const [isHideResolved, setIsHideResolved] = useStorage("isHideResolved", false)
 
   const [isProtectMergeButton, setIsProtectMergeButton] = useStorage(
     "isProtectMergeButton",
