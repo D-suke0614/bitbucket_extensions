@@ -6,10 +6,18 @@ import ToggleButton from "~src/components/ToggleButton/ToggleButton"
 
 function IndexPopup() {
   //TODO: state管理をどうにかしたい
-  const [isHideResolved, setIsHideResolved] = useStorage("isHideResolved", false)
+  const [isHideResolved, setIsHideResolved] = useStorage(
+    "isHideResolved",
+    false
+  )
 
   const [isProtectMergeButton, setIsProtectMergeButton] = useStorage(
     "isProtectMergeButton",
+    false
+  )
+
+  const [isHideDescription, setIsHideDescription] = useStorage(
+    "isHideDescription",
     false
   )
 
@@ -40,6 +48,19 @@ function IndexPopup() {
     setIsProtectMergeButton(isProtect)
   }
 
+  const handleHideDescription = async (isHide: boolean) => {
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      lastFocusedWindow: true
+    })
+    if (!tab.id) return
+    chrome.tabs
+      .sendMessage(tab.id, { action: "HIDE_DESCRIPTION" })
+      .then(() => {})
+      .catch((e) => console.error(e))
+    setIsHideDescription(isHide)
+  }
+
   return (
     <div>
       <ToggleButton
@@ -51,6 +72,11 @@ function IndexPopup() {
         isChecked={isProtectMergeButton}
         handleValue={handleProtectMergeButton}
         text={"Protect Merge Button"}
+      />
+      <ToggleButton
+        isChecked={isHideDescription}
+        handleValue={handleHideDescription}
+        text={"Hide Description"}
       />
     </div>
   )
