@@ -1,14 +1,16 @@
 ## Overview
 
-個人的にbitbucketで使いにくいと感じた機能を改善するための拡張機能
-
 Extensions to improve features that I personally find difficult to use in bitbucket.
 
-### features
+個人的にbitbucketで使いにくいと感じた機能を改善するための拡張機能
 
-- 解決済みのコメントを省略表示させる
+### current features
 
 - Hide displaying resolved comments
+- 解決済みのコメントを省略表示させる
+
+- Block pull request merging without a approvals
+- 承認されていないPRのマージボタンをdisabledにする
 
 ## Getting Started
 
