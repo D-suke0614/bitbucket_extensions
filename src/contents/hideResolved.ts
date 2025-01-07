@@ -5,9 +5,7 @@ import { sleep } from "~src/utils/sleep"
 import { getBooleanFromStorage } from "~src/utils/storage"
 
 export const config: PlasmoCSConfig = {
-  matches: [
-    "https://stash.sprocket3.systems/projects/*/pull-requests/*/overview"
-  ]
+  matches: ["https://stash.sprocket3.systems/projects/*/pull-requests/*/overview"]
 }
 
 const createButton = (isHideResolved: boolean, isLeftContent: boolean) => {
@@ -57,14 +55,11 @@ export const hideResolved = async () => {
     }
 
     // すでに表示切替用ボタンを追加済だったらcontinue
-    if (commentedElements[i].querySelector(".displayed-control-button"))
-      continue
+    if (commentedElements[i].querySelector(".displayed-control-button")) continue
 
     // resolvedかの判定に使う要素
     const commentHeader = commentedElements[i].querySelector(".comment-header")
-    const resolvedBudge = commentHeader.querySelector(
-      "div[role='presentation']"
-    )
+    const resolvedBudge = commentHeader.querySelector("div[role='presentation']")
 
     if (resolvedBudge) {
       const isOutdatedLozenge =
@@ -79,9 +74,7 @@ export const hideResolved = async () => {
       button.addEventListener("click", () => {
         const defaultTargetDisplay = fileContent.style.display
         button.textContent =
-          defaultTargetDisplay === "none"
-            ? "▲ hide resolved"
-            : "▼ show resolved"
+          defaultTargetDisplay === "none" ? "▲ hide resolved" : "▼ show resolved"
         fileContent.style.display =
           defaultTargetDisplay === "none" ? "block" : "none"
       })
