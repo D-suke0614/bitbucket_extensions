@@ -9,7 +9,7 @@ export const config: PlasmoCSConfig = {
 }
 
 export const protectMergeButton = async () => {
-  await sleep(500)
+  await sleep(1000)
   const isProtectMergeButton = await getBooleanFromStorage("isProtectMergeButton")
   const mergeButton = document.querySelector(".merge-button") as HTMLButtonElement
 
