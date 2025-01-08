@@ -11,7 +11,7 @@ export const config: PlasmoCSConfig = {
 const createButton = (isHideResolved: boolean, isLeftContent: boolean) => {
   const button = document.createElement("button")
   const buttonProperties = {
-    textContent: isHideResolved ? "▼ show resolved" : "▼ hide resolved",
+    textContent: isHideResolved ? "▼ show resolved" : "▲ hide resolved",
     type: "button"
   }
   const buttonStyles = `
