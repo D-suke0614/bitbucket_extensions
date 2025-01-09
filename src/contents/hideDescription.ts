@@ -1,6 +1,5 @@
 import type { PlasmoCSConfig } from "plasmo"
 
-import { observe } from "~src/utils/observe"
 import { sleep } from "~src/utils/sleep"
 import { getBooleanFromStorage } from "~src/utils/storage"
 
@@ -15,6 +14,7 @@ const createButton = (isHideDescription: boolean) => {
     type: "button"
   }
   const buttonStyles = `
+    margin-left: auto;
     border: none;
     background-color: #fff;
     color: #5E6C84;
@@ -23,10 +23,18 @@ const createButton = (isHideDescription: boolean) => {
   Object.assign(button, buttonProperties)
   button.style.cssText = buttonStyles
   button.classList.add('description-hide-button')
+
+  button.addEventListener("mouseenter", () => {
+    button.style.textDecoration = "underline"
+  })
+
+  button.addEventListener("mouseleave", () => {
+    button.style.textDecoration = "none"
+  })
+
   return button
 }
 
-// TODO: ボタンで開閉できるようにする
 export const hideDescription = async () => {
   await sleep(500)
   const isHideDescription = await getBooleanFromStorage("isHideDescription")
@@ -54,4 +62,3 @@ export const hideDescription = async () => {
 }
 
 window.onload = hideDescription
-// observe(".pull-request-details", hideDescription)
