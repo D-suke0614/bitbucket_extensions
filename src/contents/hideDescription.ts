@@ -56,7 +56,8 @@ export const hideDescription = async () => {
 
   hideButton.addEventListener('click', () => {
     const descriptionDisplay = description.style.display
-    hideButton.textContent = descriptionDisplay === 'none' ? "▼ show description" : "▲ hide description"
+    // descriptionDisplay === 'none' -> ▲ hide descriptionを表示し、説明を表示状態にする
+    hideButton.textContent = descriptionDisplay === 'none' ? "▲ hide description" : "▼ show description"
     description.style.display = descriptionDisplay === 'none' ? 'block' : 'none'
   })
 }
