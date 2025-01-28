@@ -13,6 +13,11 @@ function IndexPopup() {
     false
   )
 
+  const [isHideDescription, setIsHideDescription] = useStorage(
+    "isHideDescription",
+    false
+  )
+
   // TODO: 処理の共通化
   const handleHideResolved = async (isHide: boolean) => {
     const [tab] = await chrome.tabs.query({
@@ -40,6 +45,19 @@ function IndexPopup() {
     setIsProtectMergeButton(isProtect)
   }
 
+  const handleHideDescription = async (isHide: boolean) => {
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      lastFocusedWindow: true
+    })
+    if (!tab.id) return
+    chrome.tabs
+      .sendMessage(tab.id, { action: "HIDE_DESCRIPTION" })
+      .then(() => {})
+      .catch((e) => console.error(e))
+    setIsHideDescription(isHide)
+  }
+
   return (
     <div>
       <ToggleButton
@@ -51,6 +69,11 @@ function IndexPopup() {
         isChecked={isProtectMergeButton}
         handleValue={handleProtectMergeButton}
         text={"Protect Merge Button"}
+      />
+      <ToggleButton
+        isChecked={isHideDescription}
+        handleValue={handleHideDescription}
+        text={"Hide Description"}
       />
     </div>
   )
