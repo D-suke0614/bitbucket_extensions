@@ -44,9 +44,11 @@ export const hideDescription = async () => {
 
   if (!isHideDescription) {
     const hideButton = document.querySelector('.description-hide-button')
-    if (hideButton) hideButton.remove()
+    if (hideButton) {
+      hideButton.remove()
       description.style.display = 'block'
-      return
+    }
+    return
   }
 
   description.style.display = 'none'
