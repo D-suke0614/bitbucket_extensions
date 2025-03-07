@@ -18,6 +18,11 @@ function IndexPopup() {
     false
   )
 
+  const [isActivePrTemplate, setIsActivePrTemplate] = useStorage(
+    "isActivePrTemplate",
+    false
+  )
+
   // TODO: 処理の共通化
   const handleHideResolved = async (isHide: boolean) => {
     const [tab] = await chrome.tabs.query({
@@ -58,6 +63,19 @@ function IndexPopup() {
     setIsHideDescription(isHide)
   }
 
+  const handleIsActivePrTemplate = async (isActive: boolean) => {
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      lastFocusedWindow: true
+    })
+    if (!tab.id) return
+    chrome.tabs
+      .sendMessage(tab.id, { action: "PR_TEMPLATE" })
+      .then(() => {})
+      .catch((e) => console.error(e))
+    setIsActivePrTemplate(isActive)
+  }
+
   return (
     <div>
       <ToggleButton
@@ -74,6 +92,11 @@ function IndexPopup() {
         isChecked={isHideDescription}
         handleValue={handleHideDescription}
         text={"Hide Description"}
+      />
+      <ToggleButton
+        isChecked={isActivePrTemplate}
+        handleValue={handleIsActivePrTemplate}
+        text={"PR Template"}
       />
     </div>
   )

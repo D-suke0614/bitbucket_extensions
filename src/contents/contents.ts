@@ -13,5 +13,7 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
     case "HIDE_DESCRIPTION":
       hideDescription()
       break
+    case "PR_TEMPLATE":
+      break
   }
 })
