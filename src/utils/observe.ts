@@ -6,6 +6,8 @@
 export const observe = (target: string, func: any) => {
   const targetEl = document.querySelector<HTMLElement>(target)
 
+  if (!targetEl) return
+
   // オブザーバーの作成
   const observer = new MutationObserver((_) => {
     func()
