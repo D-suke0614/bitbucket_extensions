@@ -40,50 +40,71 @@ export const hideResolved = async () => {
   await sleep(500)
 
   const isHideResolved = await getBooleanFromStorage("isHideResolved")
-  const commentedElements = document.querySelectorAll(".file-comment")
-  for (let i = 0; i < commentedElements.length; i++) {
+  const commentedActivityElements = document.querySelectorAll(".commented-activity")
+  for (let i = 0; i < commentedActivityElements.length; i++) {
     // トグルがfalseだったらcontinue, もしボタンが追加されていたら削除する
     if (!isHideResolved) {
-      const displayedControlButton = commentedElements[i].querySelector(
+      const displayedControlButton = commentedActivityElements[i].querySelector(
         ".displayed-control-button"
       )
       if (displayedControlButton) displayedControlButton.remove()
-      commentedElements[i].querySelector<HTMLElement>(
+      commentedActivityElements[i].querySelector<HTMLElement>(
         ".file-content"
       ).style.display = "block"
       continue
     }
 
     // すでに表示切替用ボタンを追加済だったらcontinue
-    if (commentedElements[i].querySelector(".displayed-control-button")) continue
+    if (commentedActivityElements[i].querySelector(".displayed-control-button")) continue
 
     // resolvedかの判定に使う要素
-    const commentHeader = commentedElements[i].querySelector(".comment-header")
+    const commentHeader = commentedActivityElements[i].querySelector(".comment-header")
     const resolvedBudge = commentHeader.querySelector("div[role='presentation']")
 
     if (resolvedBudge) {
       const isOutdatedLozenge =
-        !!commentedElements[i].querySelector(".outdated-lozenge")
+        !!commentedActivityElements[i].querySelector(".outdated-lozenge")
       // 表示切替用ボタン
       const button = createButton(isHideResolved, isOutdatedLozenge)
-
+      
       // 省略する要素の取得、初期表示、イベント設定
       const fileContent =
-        commentedElements[i].querySelector<HTMLElement>(".file-content")
-      fileContent.style.display = isHideResolved ? "none" : "block"
-      button.addEventListener("click", () => {
-        const defaultTargetDisplay = fileContent.style.display
-        button.textContent =
-          defaultTargetDisplay === "none" ? "▲ hide resolved" : "▼ show resolved"
-        fileContent.style.display =
-          defaultTargetDisplay === "none" ? "block" : "none"
-      })
+      commentedActivityElements[i].querySelector<HTMLElement>(".file-content")
+      if (fileContent) {
+        // ファイルに対してのコメントがあったとき
+        fileContent.style.display = isHideResolved ? "none" : "block"
+        button.addEventListener("click", () => {
+          const defaultTargetDisplay = fileContent.style.display
+          button.textContent =
+            defaultTargetDisplay === "none" ? "▲ hide resolved" : "▼ show resolved"
+          fileContent.style.display =
+            defaultTargetDisplay === "none" ? "block" : "none"
+        })
 
-      const fileHeader =
-        commentedElements[i].querySelector<HTMLElement>(".file-header")
-      fileHeader.appendChild(button)
+        const fileHeader =
+          commentedActivityElements[i].querySelector<HTMLElement>(".file-header")
+        fileHeader.appendChild(button)
+      } else {
+        // activityエリアに直接コメントがあった時
+        const commentContent = commentedActivityElements[i].querySelector<HTMLElement>('.comment-content')
+        const replies = commentedActivityElements[i].querySelector<HTMLElement>('.replies')
+        commentContent.style.display = isHideResolved ? 'none' : 'block'
+        if (replies)replies.style.display = isHideResolved ? 'none' : 'block'
+        button.addEventListener("click", () => {
+          const defaultTargetDisplay = commentContent.style.display
+          button.textContent =
+            defaultTargetDisplay === "none" ? "▲ hide resolved" : "▼ show resolved"
+          commentContent.style.display =
+            defaultTargetDisplay === "none" ? "block" : "none"
+          if (replies)replies.style.display = defaultTargetDisplay === 'none' ? 'block' : 'none'
+        })
+
+        const commentHeader = commentedActivityElements[i].querySelector<HTMLElement>('.comment-header')
+        commentHeader.appendChild(button)
+      }
     }
   }
 }
 
+window.onload = hideResolved
 observe(".activities", hideResolved)
