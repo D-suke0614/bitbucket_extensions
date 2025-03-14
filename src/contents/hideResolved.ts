@@ -11,7 +11,7 @@ export const config: PlasmoCSConfig = {
 const createButton = (isHideResolved: boolean, isLeftContent: boolean) => {
   const button = document.createElement("button")
   button.textContent = isHideResolved ? "▼ show resolved" : "▲ hide resolved"
-  button.type = 'button'
+  button.type = "button"
   button.style.cssText = `
   margin-left: ${isLeftContent ? "5px" : "auto"};
   border: none;
@@ -36,9 +36,9 @@ const createButton = (isHideResolved: boolean, isLeftContent: boolean) => {
  * 引数で受け取ったElementが存在していたら`display = 'block'`にする
  */
 const showElement = (elements: HTMLElement[]) => {
-  elements.forEach(element => {
+  elements.forEach((element) => {
     if (element) {
-      element.style.display = 'block';
+      element.style.display = "block"
     }
   })
 }
@@ -48,7 +48,8 @@ const showElement = (elements: HTMLElement[]) => {
  */
 const toggleElement = (button: HTMLButtonElement, targetElement: HTMLElement) => {
   const defaultDisplay = targetElement.style.display
-  button.textContent = defaultDisplay === "none" ? "▲ hide resolved" : "▼ show resolved"
+  button.textContent =
+    defaultDisplay === "none" ? "▲ hide resolved" : "▼ show resolved"
   targetElement.style.display = defaultDisplay === "none" ? "block" : "none"
 }
 
@@ -61,33 +62,44 @@ export const hideResolved = async () => {
   for (let i = 0; i < commentedActivityElements.length; i++) {
     // トグルがfalseだったらcontinue && もしボタンが追加されていたら削除する
     if (!isHideResolved) {
-      const displayedControlButton = commentedActivityElements[i].querySelector<HTMLElement>(
-        ".displayed-control-button"
-      )
+      const displayedControlButton = commentedActivityElements[
+        i
+      ].querySelector<HTMLElement>(".displayed-control-button")
       if (displayedControlButton) displayedControlButton.remove()
 
-      const fileContent = commentedActivityElements[i].querySelector<HTMLElement>(".file-content")
-      const commentContent = commentedActivityElements[i].querySelector<HTMLElement>('.comment-content')
-      const replies = commentedActivityElements[i].querySelector<HTMLElement>('.replies')
+      const fileContent =
+        commentedActivityElements[i].querySelector<HTMLElement>(".file-content")
+      const commentContent =
+        commentedActivityElements[i].querySelector<HTMLElement>(".comment-content")
+      const replies =
+        commentedActivityElements[i].querySelector<HTMLElement>(".replies")
       showElement([fileContent, commentContent, replies])
       continue
     }
 
     // すでに表示切替用ボタンを追加済だったらcontinue
-    if (commentedActivityElements[i].querySelector<HTMLElement>(".displayed-control-button")) continue
+    if (
+      commentedActivityElements[i].querySelector<HTMLElement>(
+        ".displayed-control-button"
+      )
+    )
+      continue
 
     // resolvedかの判定に使う要素
-    const commentHeader = commentedActivityElements[i].querySelector<HTMLElement>(".comment-header")
-    const resolvedBudge = commentHeader.querySelector<HTMLElement>("div[role='presentation']")
+    const commentHeader =
+      commentedActivityElements[i].querySelector<HTMLElement>(".comment-header")
+    const resolvedBudge = commentHeader.querySelector<HTMLElement>(
+      "div[role='presentation']"
+    )
 
     if (resolvedBudge) {
       const isOutdatedLozenge =
         !!commentedActivityElements[i].querySelector(".outdated-lozenge")
       const hideButton = createButton(isHideResolved, isOutdatedLozenge)
-      
+
       // 省略する要素の取得、初期表示、イベント設定
       const fileContent =
-      commentedActivityElements[i].querySelector<HTMLElement>(".file-content")
+        commentedActivityElements[i].querySelector<HTMLElement>(".file-content")
       if (fileContent) {
         // ファイルに対してのコメントがあったとき
         fileContent.style.display = isHideResolved ? "none" : "block"
@@ -100,12 +112,16 @@ export const hideResolved = async () => {
         fileHeader.appendChild(hideButton)
       } else {
         // activityエリアに直接コメントがあった時
-        const commentContent = commentedActivityElements[i].querySelector<HTMLElement>('.comment-content')
-        const replies = commentedActivityElements[i].querySelector<HTMLElement>('.replies')
-        commentContent.style.display = isHideResolved ? 'none' : 'block'
-        if (replies)replies.style.display = isHideResolved ? 'none' : 'block'
+        const commentContent =
+          commentedActivityElements[i].querySelector<HTMLElement>(".comment-content")
+        const replies =
+          commentedActivityElements[i].querySelector<HTMLElement>(".replies")
+        commentContent.style.display = isHideResolved ? "none" : "block"
+        if (replies) replies.style.display = isHideResolved ? "none" : "block"
         hideButton.addEventListener("click", () => {
-          if (replies)replies.style.display = commentContent.style.display === 'none' ? 'block' : 'none'
+          if (replies)
+            replies.style.display =
+              commentContent.style.display === "none" ? "block" : "none"
           toggleElement(hideButton, commentContent)
         })
 
