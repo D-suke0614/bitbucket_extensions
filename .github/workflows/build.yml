@@ -23,5 +23,7 @@ jobs:
         with:
           node-version: 20.x
           cache: "pnpm"
+      - name: npm i
+        run: npm i
       - name: Build the extension
         run: pnpm build
