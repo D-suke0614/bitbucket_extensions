@@ -1,11 +1,25 @@
-import { observe } from "~src/utils/observe"
+import type { PlasmoCSConfig } from "plasmo"
+
+import { waitForElement } from "~src/utils/observe"
 import { sleep } from "~src/utils/sleep"
 import { getBooleanFromStorage } from "~src/utils/storage"
 
-export const protectMergeButton = async () => {
+export const config: PlasmoCSConfig = {
+  matches: ["https://stash.sprocket3.systems/projects/*/pull-requests/*/overview"]
+}
+
+chrome.runtime.onMessage.addListener(async (req, _sender, _sendResponse) => {
+  if (req.action !== "PROTECT_MERGE_BUTTON") return
   await sleep(500)
+  await protectMergeButton()
+  return true
+})
+
+const protectMergeButton = async () => {
   const isProtectMergeButton = await getBooleanFromStorage("isProtectMergeButton")
   const mergeButton = document.querySelector(".merge-button") as HTMLButtonElement
+
+  if (!mergeButton) return
 
   if (!isProtectMergeButton) {
     mergeButton.disabled = false
@@ -21,5 +35,6 @@ export const protectMergeButton = async () => {
   mergeButton.disabled = !isApproved
 }
 
-window.onload = protectMergeButton
-observe(".merge-button", protectMergeButton)
+waitForElement(".merge-button", async () => {
+  await protectMergeButton()
+})

@@ -1,12 +1,19 @@
 import type { PlasmoCSConfig } from "plasmo"
 
-import { observe } from "~src/utils/observe"
+import { observeElementChanges, waitForElement } from "~src/utils/observe"
 import { sleep } from "~src/utils/sleep"
 import { getBooleanFromStorage } from "~src/utils/storage"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://stash.sprocket3.systems/projects/*/pull-requests/*/overview"]
 }
+
+chrome.runtime.onMessage.addListener(async (req, _sender, _sendResponse) => {
+  if (req.action !== "HIDE_RESOLVED") return
+  await sleep(500)
+  await hideResolved()
+  return true
+})
 
 const createButton = (isHideResolved: boolean, isLeftContent: boolean) => {
   const button = document.createElement("button")
@@ -53,7 +60,7 @@ const toggleElement = (button: HTMLButtonElement, targetElement: HTMLElement) =>
   targetElement.style.display = defaultDisplay === "none" ? "block" : "none"
 }
 
-export const hideResolved = async () => {
+const hideResolved = async () => {
   await sleep(500)
 
   const isHideResolved = await getBooleanFromStorage("isHideResolved")
@@ -131,5 +138,7 @@ export const hideResolved = async () => {
   }
 }
 
-window.onload = hideResolved
-observe(".activities", hideResolved)
+waitForElement(".activities", async () => {
+  await hideResolved()
+})
+observeElementChanges(".activities", hideResolved)

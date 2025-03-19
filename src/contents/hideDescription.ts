@@ -1,11 +1,19 @@
 import type { PlasmoCSConfig } from "plasmo"
 
+import { waitForElement } from "~src/utils/observe"
 import { sleep } from "~src/utils/sleep"
 import { getBooleanFromStorage } from "~src/utils/storage"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://stash.sprocket3.systems/projects/*/pull-requests/*/overview"]
 }
+
+chrome.runtime.onMessage.addListener(async (req, _sender, _sendResponse) => {
+  if (req.action !== "HIDE_DESCRIPTION") return
+  await sleep(500)
+  await hideDescription()
+  return true
+})
 
 const createButton = (isHideDescription: boolean) => {
   const button = document.createElement("button")
@@ -35,8 +43,7 @@ const createButton = (isHideDescription: boolean) => {
   return button
 }
 
-export const hideDescription = async () => {
-  await sleep(500)
+const hideDescription = async () => {
   const isHideDescription = await getBooleanFromStorage("isHideDescription")
   const description = document.querySelector(
     ".pull-request-description"
@@ -63,4 +70,6 @@ export const hideDescription = async () => {
   })
 }
 
-window.onload = hideDescription
+waitForElement(".pull-request-description", async () => {
+  await hideDescription()
+})
