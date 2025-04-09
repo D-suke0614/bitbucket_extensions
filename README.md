@@ -7,10 +7,12 @@ Extensions to improve features that I personally find difficult to use in bitbuc
 ### current features
 
 - Hide displaying resolved comments
-- 解決済みのコメントを省略表示させる
-
 - Block pull request merging without a approvals
+- Hide displaying PR summary section
+
+- 解決済みのコメントを省略表示させる
 - 承認されていないPRのマージボタンをdisabledにする
+- PR概要部分を省略表示させる
 
 ## Getting Started
 
