@@ -4,77 +4,73 @@ import { useStorage } from "@plasmohq/storage/hook"
 
 import ToggleButton from "~src/components/ToggleButton/ToggleButton"
 
-function IndexPopup() {
-  //TODO: state管理をどうにかしたい
+const useToggleOptions = () => {
   const [isHideResolved, setIsHideResolved] = useStorage("isHideResolved", false)
-
   const [isProtectMergeButton, setIsProtectMergeButton] = useStorage(
     "isProtectMergeButton",
     false
   )
-
   const [isHideDescription, setIsHideDescription] = useStorage(
     "isHideDescription",
     false
   )
 
-  // TODO: 処理の共通化
-  const handleHideResolved = async (isHide: boolean) => {
-    const [tab] = await chrome.tabs.query({
-      active: true,
-      lastFocusedWindow: true
-    })
-    if (!tab.id) return
-    chrome.tabs
-      .sendMessage(tab.id, { action: "HIDE_RESOLVED" })
-      .then(() => {})
-      .catch((e) => console.error(e))
-    setIsHideResolved(isHide)
-  }
+  return [
+    {
+      key: "isHideResolved",
+      label: "hide resolved",
+      value: isHideResolved,
+      setter: setIsHideResolved,
+      action: "HIDE_RESOLVED"
+    },
+    {
+      key: "isProtectMergeButton",
+      label: "Protect Merge Button",
+      value: isProtectMergeButton,
+      setter: setIsProtectMergeButton,
+      action: "PROTECT_MERGE_BUTTON"
+    },
+    {
+      key: "isHideDescription",
+      label: "Hide Description",
+      value: isHideDescription,
+      setter: setIsHideDescription,
+      action: "HIDE_DESCRIPTION"
+    }
+  ]
+}
 
-  const handleProtectMergeButton = async (isProtect: boolean) => {
+const sendMessageToContentScript = async (action: string) => {
+  try {
     const [tab] = await chrome.tabs.query({
       active: true,
       lastFocusedWindow: true
     })
-    if (!tab.id) return
-    chrome.tabs
-      .sendMessage(tab.id, { action: "PROTECT_MERGE_BUTTON" })
-      .then(() => {})
-      .catch((e) => console.error(e))
-    setIsProtectMergeButton(isProtect)
-  }
+    if (tab?.id) {
+      await chrome.tabs.sendMessage(tab.id, { action })
+    }
+  } catch (e) {}
+}
 
-  const handleHideDescription = async (isHide: boolean) => {
-    const [tab] = await chrome.tabs.query({
-      active: true,
-      lastFocusedWindow: true
-    })
-    if (!tab.id) return
-    chrome.tabs
-      .sendMessage(tab.id, { action: "HIDE_DESCRIPTION" })
-      .then(() => {})
-      .catch((e) => console.error(e))
-    setIsHideDescription(isHide)
-  }
+function IndexPopup() {
+  const toggleOptions = useToggleOptions()
+
+  const handleToggle =
+    (action: string, setter: (v: boolean) => void) => async (checked: boolean) => {
+      await sendMessageToContentScript(action)
+      setter(checked)
+    }
 
   return (
     <div>
-      <ToggleButton
-        isChecked={isHideResolved}
-        handleValue={handleHideResolved}
-        text={"hide resolved"}
-      />
-      <ToggleButton
-        isChecked={isProtectMergeButton}
-        handleValue={handleProtectMergeButton}
-        text={"Protect Merge Button"}
-      />
-      <ToggleButton
-        isChecked={isHideDescription}
-        handleValue={handleHideDescription}
-        text={"Hide Description"}
-      />
+      {toggleOptions.map(({ key, label, value, setter, action }) => (
+        <ToggleButton
+          key={key}
+          isChecked={value}
+          handleValue={handleToggle(action, setter)}>
+          {label}
+        </ToggleButton>
+      ))}
     </div>
   )
 }
